@@ -105,9 +105,9 @@ export default class App extends Component {
 
     if (ship) {
       if (!!currentPosition) {
-        text = `Select position for ${ship.name}`;
-      } else {
         text = `Select direction for ${ship.name}`;
+      } else {
+        text = `Select position for ${ship.name}`;
       }
     } else {
       text = `Shoot!`;
