@@ -34,13 +34,13 @@ export function getRelativePosition(position, direction) {
   const splitPosition = position.split('');
   switch (direction) {
     case 'right':
-      return splitPosition[0] + (+splitPosition[1] + 1);
-    case 'left':
-      return splitPosition[0] + (+splitPosition[1] - 1);
-    case 'up':
-      return String.fromCharCode(splitPosition[0].charCodeAt(0) - 1) + splitPosition[1];
-    case 'down':
       return String.fromCharCode(splitPosition[0].charCodeAt(0) + 1) + splitPosition[1];
+    case 'left':
+      return String.fromCharCode(splitPosition[0].charCodeAt(0) - 1) + splitPosition[1];
+    case 'up':
+      return splitPosition[0] + (+splitPosition[1] - 1);
+    case 'down':
+      return splitPosition[0] + (+splitPosition[1] + 1);
     default:
       throw Error('invalid direction');
   }

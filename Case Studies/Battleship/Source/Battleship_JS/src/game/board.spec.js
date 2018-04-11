@@ -1,16 +1,16 @@
 import { initializeBoard, initializeEnemyBoard, fleet, getRelativePosition, isHit, placeShip } from './board';
 
 it('should get relative position', () => {
-  expect(getRelativePosition('c5', 'right')).toBe('c6');
-  expect(getRelativePosition('c5', 'left')).toBe('c4');
-  expect(getRelativePosition('c5', 'up')).toBe('b5');
-  expect(getRelativePosition('c5', 'down')).toBe('d5');
+  expect(getRelativePosition('c5', 'right')).toBe('d5');
+  expect(getRelativePosition('c5', 'left')).toBe('b5');
+  expect(getRelativePosition('c5', 'up')).toBe('c4');
+  expect(getRelativePosition('c5', 'down')).toBe('c6');
 });
 
 
 it('should place ships', () => {
   let board = initializeBoard();
-  placeShip(board, 0, 'a1', 'right');
+  placeShip(board, 0, 'a1', 'down');
   expect(board).toEqual({
     fleet: [
       {
