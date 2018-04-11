@@ -88,3 +88,9 @@ export function placeShip(board, shipIndex, position, direction) {
     currentPosition = getRelativePosition(currentPosition, direction);
   }
 }
+
+export function getRandomPosition(columnCount, rowCount) {
+  const column = String.fromCharCode(65 + Math.round(Math.random()) * rowCount);
+  const row = (Math.round(Math.random()) * columnCount).toString();
+  return column + row;
+}

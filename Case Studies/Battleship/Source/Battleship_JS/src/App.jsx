@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import {
+  getRandomPosition,
   initializeBoard,
   initializeEnemyBoard,
-  placeShip,
-  isHit
+  isHit,
+  placeShip
 } from './game/board-service';
 
 function getSequence(length) {
@@ -115,6 +116,8 @@ export default class App extends Component {
         isHit(this.state.enemyBoard, position) ? 'Hit!' : 'Miss!'
       }`
     );
+    const counterAttack = getRandomPosition(8,8);
+    alert(`Enemy shoots at ${counterAttack}: ${isHit(this.state.myBoard, counterAttack) ? 'Hit!' : 'Miss!'}`)
   };
 
   render() {
