@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = {
   entry: './src/index',
-
+  mode: 'development',
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist')
@@ -17,7 +17,7 @@ module.exports = {
         loader: 'babel-loader',
 
         options: {
-          presets: ['env']
+          presets: ['env', 'react']
         }
       },
       {
