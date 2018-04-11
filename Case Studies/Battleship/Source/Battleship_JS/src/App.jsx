@@ -14,8 +14,10 @@ export default function App({selectDirection, selected}) {
   return (
     <table>
       <thead>
+      <tr>
       <th></th>
       {getSequence(boardSize).map(i => <th>{getLetter(i)}</th>)}
+      </tr>
       </thead>
       <tbody>
       {getSequence(boardSize).map((i) => <tr><td><strong>{i}</strong></td>{
