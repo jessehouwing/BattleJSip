@@ -9,27 +9,24 @@ export function makeFleet() {
   ];
 }
 
-export const enemyBoard = {
-  ships: [
-    {
-      name: 'Carrier',
-      color: 'green',
-      size: 2,
-      positions: ['a1', 'a2']
-    }
-  ]
-};
-
-
 export function initializeBoard() {
   return {
-    ships: makeFleet()
+    fleet: makeFleet()
   };
 }
 
+export function initializeEnemyBoard() {
+  const board = {
+    fleet: makeFleet()
+  };
+
+  placeShip(board, 0, 'b3', 'left');
+
+  return board;
+}
 
 export function isHit(board, position) {
-  return board.ships.some(ship => ship.positions.some(p => p === position))
+  return board.fleet.some(ship => ship.positions.some(p => p === position))
 }
 
 
@@ -50,7 +47,7 @@ export function getRelativePosition(position, direction) {
 }
 
 export function placeShip(board, shipIndex, position, direction) {
-  let ship = board.ships[shipIndex];
+  let ship = board.fleet[shipIndex];
 
   let currentPosition = position;
   for (let i = 0; i < ship.size; i++) {
