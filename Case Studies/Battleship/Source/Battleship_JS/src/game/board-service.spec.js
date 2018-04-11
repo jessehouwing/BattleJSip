@@ -1,4 +1,4 @@
-import { initializeBoard, initializeEnemyBoard, fleet, getRelativePosition, isHit, placeShip } from './board';
+import { initializeBoard, initializeEnemyBoard, fleet, getRelativePosition, isHit, placeShip } from './board-service';
 
 it('should get relative position', () => {
   expect(getRelativePosition('c5', 'right')).toBe('d5');
