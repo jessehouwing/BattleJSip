@@ -1,44 +1,35 @@
 const webpack = require('webpack');
 const path = require('path');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-	entry: './src/index',
+  entry: './src/index',
 
-	output: {
-		filename: '[name].js',
-		path: path.resolve(__dirname, 'dist')
-	},
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  },
 
-	module: {
-		rules: [
-			{
-				test: /\.js$/,
-				exclude: /node_modules/,
-				loader: 'babel-loader',
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
 
-				options: {
-					presets: ['env']
-				}
-			},
-			{
-				test: /\.css$/,
+        options: {
+          presets: ['env']
+        }
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      }
+    ]
+  },
 
-				use: ExtractTextPlugin.extract({
-					use: [
-						{
-							loader: 'css-loader',
-							options: {
-								sourceMap: true
-							}
-						}
-					],
-					fallback: 'style-loader'
-				})
-			}
-		]
-	},
-
-	plugins: [new UglifyJSPlugin(), new ExtractTextPlugin('style.css')]
+  plugins: [new UglifyJSPlugin()]
 };
