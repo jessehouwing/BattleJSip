@@ -17,14 +17,14 @@ const Board = ({selected}) => {
       <thead>
       <tr>
         <th></th>
-        {getSequence(boardSize).map(i => <th>{getLetter(i)}</th>)}
+        {getSequence(boardSize).map(i => <th key={i}>{getLetter(i)}</th>)}
       </tr>
       </thead>
       <tbody>
-      {getSequence(boardSize).map((i) => <tr>
+      {getSequence(boardSize).map((i) => <tr key={i}>
         <td><strong>{i}</strong></td>
         {
-          getSequence(boardSize).map((j) => <td>
+          getSequence(boardSize).map((j) => <td key={j}>
             <button onClick={() => selected(getLetter(j) + i)}>{getLetter(j) + i}</button>
           </td>)
         }</tr>)}
