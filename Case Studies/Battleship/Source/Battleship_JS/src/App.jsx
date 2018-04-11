@@ -1,4 +1,5 @@
-import React, {Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
+import { initializeBoard, initializeEnemyBoard, placeShip } from './game/board-service';
 
 function getSequence(length) {
   return Array.from({length}).fill(0).map((e, i) => i);
@@ -61,9 +62,60 @@ const DirectionSelector = ({selected}) => (
     </tbody>
   </table>);
 
-export default function App({text, selectDirection, selected}) {
-  return <Fragment>
-    <h1>{text}</h1>
-    {selectDirection ? <DirectionSelector {...{selected}}/> : <Board {...{selected}} />}
-  </Fragment>
+export default class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      currentPosition: undefined,
+      currentShipIndex: 0,
+      enemyBoard: initializeEnemyBoard(),
+      myBoard: initializeBoard()
+    };
+  }
+
+  setCurrentPosition = (position) => {
+    this.setState({
+      currentPosition: position,
+    });
+  }
+
+  placeMyShip = (direction) => {
+    const { myBoard, currentPosition, currentShipIndex } = this.state;
+
+    if (currentPosition) {
+      placeShip(myBoard, currentShipIndex, currentPosition, direction);
+
+      this.setState({
+        currentPosition: undefined,
+        currentShipIndex: currentShipIndex + 1,
+        myBoard
+      });
+    }
+  }
+
+  shoot(position) {
+    console.log(`Shoot at ${position}`);
+  }
+
+  render() {
+    const { currentPosition, currentShipIndex, myBoard } = this.state;
+    const ship = myBoard.fleet[currentShipIndex];
+    let text;
+
+    if (ship) {
+      if (!!currentPosition) {
+        text = `Select position for ${ship.name}`;
+      } else {
+        text = `Select direction for ${ship.name}`;
+      }
+    } else {
+      text = `Shoot!`;
+    }
+
+    return <Fragment>
+      <h1>{text}</h1>
+      {!!currentPosition ? <DirectionSelector selected={this.placeMyShip} /> : <Board selected={ship ? this.setCurrentPosition : this.shoot} />}
+    </Fragment>
+  }
 }
