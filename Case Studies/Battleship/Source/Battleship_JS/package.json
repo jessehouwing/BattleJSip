@@ -4,7 +4,8 @@
   "description": "Battleship case study for scrum.org PSD training",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "test": "jest --watch"
   },
   "authors": [
     "Frank van Wijk <fvanwijk@xebia.com>",

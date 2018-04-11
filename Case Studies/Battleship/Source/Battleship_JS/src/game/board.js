@@ -1,8 +1,32 @@
 export function makeFleet() {
   return [
     {
-      name: 'Carrier',
-      color: 'green',
+      name: 'Aircraft Carrier',
+      color: 'cadet blue',
+      size: 5,
+      positions: []
+    },
+    {
+      name: 'Battleship',
+      color: 'red',
+      size: 4,
+      positions: []
+    },
+    {
+      name: 'Submarine',
+      color: 'chartreuse',
+      size: 3,
+      positions: []
+    },
+    {
+      name: 'Patrol',
+      color: 'yellow',
+      size: 3,
+      positions: []
+    },
+    {
+      name: 'Patrol Boat',
+      color: 'orange',
       size: 2,
       positions: []
     }
@@ -20,7 +44,11 @@ export function initializeEnemyBoard() {
     fleet: makeFleet()
   };
 
-  placeShip(board, 0, 'b3', 'left');
+  placeShip(board, 0, 'b4', 'down');
+  placeShip(board, 1, 'e6', 'down');
+  placeShip(board, 2, 'a3', 'right');
+  placeShip(board, 3, 'f8', 'right');
+  placeShip(board, 4, 'c5', 'down');
 
   return board;
 }
