@@ -1,0 +1,16 @@
+{
+  "name": "battleship",
+  "version": "1.0.0",
+  "description": "Battleship case study for scrum.org PSD training",
+  "private": true,
+  "scripts": {
+    "start": "npx http-server"
+  },
+  "authors": [
+    "Frank van Wijk <fvanwijk@xebia.com>",
+    "Ruben Oostinga <roostinga@xebia.com>"
+  ],
+  "dependencies": {
+    "react": "16.3.1"
+  }
+}
