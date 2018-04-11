@@ -44,11 +44,11 @@ export function initializeEnemyBoard() {
     fleet: makeFleet()
   };
 
-  placeShip(board, 0, 'b4', 'down');
-  placeShip(board, 1, 'e6', 'down');
-  placeShip(board, 2, 'a3', 'right');
-  placeShip(board, 3, 'f8', 'right');
-  placeShip(board, 4, 'c5', 'down');
+  placeShip(board, 0, 'B4', 'down');
+  placeShip(board, 1, 'E6', 'down');
+  placeShip(board, 2, 'A3', 'right');
+  placeShip(board, 3, 'F8', 'right');
+  placeShip(board, 4, 'C5', 'down');
 
   return board;
 }

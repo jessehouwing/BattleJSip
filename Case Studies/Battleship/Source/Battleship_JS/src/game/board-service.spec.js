@@ -1,23 +1,23 @@
 import { initializeBoard, initializeEnemyBoard, fleet, getRelativePosition, isHit, placeShip } from './board-service';
 
 it('should get relative position', () => {
-  expect(getRelativePosition('c5', 'right')).toBe('d5');
-  expect(getRelativePosition('c5', 'left')).toBe('b5');
-  expect(getRelativePosition('c5', 'up')).toBe('c4');
-  expect(getRelativePosition('c5', 'down')).toBe('c6');
+  expect(getRelativePosition('C5', 'right')).toBe('D5');
+  expect(getRelativePosition('C5', 'left')).toBe('B5');
+  expect(getRelativePosition('C5', 'up')).toBe('C4');
+  expect(getRelativePosition('C5', 'down')).toBe('C6');
 });
 
 
 it('should place ships', () => {
   let board = initializeBoard();
-  placeShip(board, 0, 'a1', 'down');
+  placeShip(board, 0, 'A1', 'down');
   expect(board).toEqual({
 
     fleet: [
       {
         color: 'cadet blue',
         name: 'Aircraft Carrier',
-        positions: ['a1', 'a2', 'a3', 'a4', 'a5'],
+        positions: ['A1', 'A2', 'A3', 'A4', 'A5'],
         size: 5
       },
       {
@@ -54,31 +54,31 @@ it('should initialize an enemy board', () => {
       {
         color: 'cadet blue',
         name: 'Aircraft Carrier',
-        positions: ['b4', 'b5', 'b6', 'b7', 'b8'],
+        positions: ['B4', 'B5', 'B6', 'B7', 'B8'],
         size: 5
       },
       {
         color: "red",
         name: "Battleship",
-        positions: ['e6', 'e7', 'e8', 'e9'],
+        positions: ['E6', 'E7', 'E8', 'E9'],
         size: 4
       },
       {
         color: "chartreuse",
         name: "Submarine",
-        positions: ['a3', 'b3', 'c3'],
+        positions: ['A3', 'B3', 'C3'],
         size: 3
       },
       {
         color: "yellow",
         name: "Patrol",
-        positions: ['f8', 'g8', 'h8'],
+        positions: ['F8', 'G8', 'H8'],
         size: 3
       },
       {
         color: "orange",
         name: "Patrol Boat",
-        positions: ['c5', 'c6'],
+        positions: ['C5', 'C6'],
         size: 2
       }
     ]
@@ -87,6 +87,6 @@ it('should initialize an enemy board', () => {
 
 it('should check for hit or miss', () => {
   const enemyBoard = initializeEnemyBoard();
-  expect(isHit(enemyBoard, 'b3')).toBe(true);
-  expect(isHit(enemyBoard, 'b1')).toBe(false);
+  expect(isHit(enemyBoard, 'B3')).toBe(true);
+  expect(isHit(enemyBoard, 'B1')).toBe(false);
 });
