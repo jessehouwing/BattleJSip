@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { initializeBoard, initializeEnemyBoard, placeShip } from './game/board-service';
+import { initializeBoard, initializeEnemyBoard, placeShip, isHit } from './game/board-service';
 
 function getSequence(length) {
   return Array.from({length}).fill(0).map((e, i) => i);
@@ -94,8 +94,8 @@ export default class App extends Component {
     }
   }
 
-  shoot(position) {
-    console.log(`Shoot at ${position}`);
+  shoot = (position) => {
+    alert(`Shoot at ${position}: ${isHit(this.state.enemyBoard, position) ? 'Hit!' : 'Miss!'}`);
   }
 
   render() {
