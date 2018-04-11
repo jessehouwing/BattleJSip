@@ -1,8 +1,15 @@
 import React, { Component, Fragment } from 'react';
-import { initializeBoard, initializeEnemyBoard, placeShip, isHit } from './game/board-service';
+import {
+  initializeBoard,
+  initializeEnemyBoard,
+  placeShip,
+  isHit
+} from './game/board-service';
 
 function getSequence(length) {
-  return Array.from({length}).fill(0).map((e, i) => i);
+  return Array.from({ length })
+    .fill(0)
+    .map((e, i) => i);
 }
 
 function getLetter(i) {
@@ -11,56 +18,64 @@ function getLetter(i) {
 
 const boardSize = 8;
 
-const Board = ({selected}) => {
+const Board = ({ selected }) => {
   return (
     <table>
       <thead>
-      <tr>
-        <th></th>
-        {getSequence(boardSize).map(i => <th key={i}>{getLetter(i)}</th>)}
-      </tr>
+        <tr>
+          <th />
+          {getSequence(boardSize).map(i => <th key={i}>{getLetter(i)}</th>)}
+        </tr>
       </thead>
       <tbody>
-      {getSequence(boardSize).map((i) => <tr key={i}>
-        <td><strong>{i}</strong></td>
-        {
-          getSequence(boardSize).map((j) => <td key={j}>
-            <button onClick={() => selected(getLetter(j) + i)}>{getLetter(j) + i}</button>
-          </td>)
-        }</tr>)}
+        {getSequence(boardSize).map(i => (
+          <tr key={i}>
+            <td>
+              <strong>{i}</strong>
+            </td>
+            {getSequence(boardSize).map(j => (
+              <td key={j}>
+                <button onClick={() => selected(getLetter(j) + i)}>
+                  {getLetter(j) + i}
+                </button>
+              </td>
+            ))}
+          </tr>
+        ))}
       </tbody>
     </table>
   );
-}
+};
 
-const DirectionSelector = ({selected}) => (
+const DirectionSelector = ({ selected }) => (
   <table>
     <tbody>
-    <tr>
-      <td></td>
-      <td>
-        <button onClick={() => selected('up')}>▲</button>
-      </td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>
-        <button onClick={() => selected('left')}>◀</button>
-      </td>
-      <td></td>
-      <td>
-        <button onClick={() => selected('right')}>▶</button>
-      </td>
-    </tr>
-    <tr>
-      <td></td>
-      <td>
-        <button onClick={() => selected('down')}>▼</button>
-      </td>
-      <td></td>
-    </tr>
+      <tr>
+        <td />
+        <td>
+          <button onClick={() => selected('up')}>▲</button>
+        </td>
+        <td />
+      </tr>
+      <tr>
+        <td>
+          <button onClick={() => selected('left')}>◀</button>
+        </td>
+        <td />
+        <td>
+          <button onClick={() => selected('right')}>▶</button>
+        </td>
+      </tr>
+      <tr>
+        <td />
+        <td>
+          <button onClick={() => selected('down')}>▼</button>
+        </td>
+        <td />
+      </tr>
     </tbody>
-  </table>);
+  </table>
+);
 
 export default class App extends Component {
   constructor() {
@@ -74,13 +89,13 @@ export default class App extends Component {
     };
   }
 
-  setCurrentPosition = (position) => {
+  setCurrentPosition = position => {
     this.setState({
-      currentPosition: position,
+      currentPosition: position
     });
-  }
+  };
 
-  placeMyShip = (direction) => {
+  placeMyShip = direction => {
     const { myBoard, currentPosition, currentShipIndex } = this.state;
 
     if (currentPosition) {
@@ -92,11 +107,15 @@ export default class App extends Component {
         myBoard
       });
     }
-  }
+  };
 
-  shoot = (position) => {
-    alert(`Shoot at ${position}: ${isHit(this.state.enemyBoard, position) ? 'Hit!' : 'Miss!'}`);
-  }
+  shoot = position => {
+    alert(
+      `Shoot at ${position}: ${
+        isHit(this.state.enemyBoard, position) ? 'Hit!' : 'Miss!'
+      }`
+    );
+  };
 
   render() {
     const { currentPosition, currentShipIndex, myBoard } = this.state;
@@ -113,9 +132,15 @@ export default class App extends Component {
       text = `Shoot!`;
     }
 
-    return <Fragment>
-      <h1>{text}</h1>
-      {!!currentPosition ? <DirectionSelector selected={this.placeMyShip} /> : <Board selected={ship ? this.setCurrentPosition : this.shoot} />}
-    </Fragment>
+    return (
+      <Fragment>
+        <h1>{text}</h1>
+        {!!currentPosition ? (
+          <DirectionSelector selected={this.placeMyShip} />
+        ) : (
+          <Board selected={ship ? this.setCurrentPosition : this.shoot} />
+        )}
+      </Fragment>
+    );
   }
 }
