@@ -6,6 +6,7 @@ import {
   isHit,
   placeShip
 } from './game/board-service';
+import './App.css';
 
 function getSequence(length) {
   return Array.from({ length })

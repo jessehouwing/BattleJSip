@@ -32,5 +32,5 @@ The test runner is [Jest](https://facebook.github.io/jest/) which provides suppo
 # Background
 Consider this code as inherited code from previous developers. This means you can't make any assumptions on the fitness of the code. **It might be incorrect, unmaintainable, untestable, incomplete or just plain bad.** Feel free to improve some or all of it.
 
-This folder contains a Battleship game implemented in vanilla JavaScript with a [React](https://reactjs.org/) interface. A basic [Webpack](https://webpack.js.org/) with [Babel](https://babeljs.io/) configuration is used instead of a more complex approach. Importing CSS in JavaScript is supported and exposed as global CSS. Currently the application does not have any CSS.
+This folder contains a Battleship game implemented in vanilla JavaScript with a [React](https://reactjs.org/) interface. A basic [Webpack](https://webpack.js.org/) with [Babel](https://babeljs.io/) configuration is used instead of a more complex approach. Importing CSS in JavaScript is supported and exposed as global CSS. Currently the application does not have much CSS.
 
