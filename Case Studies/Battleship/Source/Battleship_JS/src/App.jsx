@@ -116,8 +116,12 @@ export default class App extends Component {
         isHit(this.state.enemyBoard, position) ? 'Hit!' : 'Miss!'
       }`
     );
-    const counterAttack = getRandomPosition(8,8);
-    alert(`Enemy shoots at ${counterAttack}: ${isHit(this.state.myBoard, counterAttack) ? 'Hit!' : 'Miss!'}`)
+    const counterAttack = getRandomPosition(8, 8);
+    alert(
+      `Enemy shoots at ${counterAttack}: ${
+        isHit(this.state.myBoard, counterAttack) ? 'Hit!' : 'Miss!'
+      }`
+    );
   };
 
   render() {
