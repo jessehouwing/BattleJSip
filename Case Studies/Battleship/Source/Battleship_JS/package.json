@@ -9,7 +9,7 @@
     "serve": "http-server dist/ -o -p 5000",
     "lint": "eslint . --ext js,jsx --fix",
     "test": "jest --watch",
-    "test-ci": "jest --ci --testResultsProcessor=jest-junit --coverage"
+    "test-ci": "jest --ci --coverage"
   },
   "authors": [
     "Frank van Wijk <fvanwijk@xebia.com>",
@@ -55,6 +55,7 @@
       "text",
       "html",
       "cobertura"
-    ]
+    ],
+    "testResultsProcessor": "jest-junit"
   }
 }
