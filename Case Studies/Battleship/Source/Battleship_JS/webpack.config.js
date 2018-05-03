@@ -9,7 +9,7 @@ module.exports = {
     filename: '[name].[chunkhash].js',
     path: path.resolve('dist')
   },
-
+  devtool: 'sourcemaps',
   module: {
     rules: [
       {
