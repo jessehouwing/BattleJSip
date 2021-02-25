@@ -1,0 +1,72 @@
+trigger:
+- master
+
+pool:
+  name: Hosted
+  demands: npm
+  vmImage: 'ubuntu-latest'
+
+variables:
+  project.rootDirectory: '$(Build.SourcesDirectory)/'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+    displayName: 'Install Node.js'
+
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '2.x'
+
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    workingDir: '$(project.rootDirectory)'
+    verbose: false
+
+- task: Npm@1
+  displayName: 'npm run lint'
+  inputs:
+    command: custom
+    workingDir: '$(project.rootDirectory)'
+    verbose: false
+    customCommand: 'run lint'
+
+- task: Npm@1
+  displayName: 'npm run build'
+  inputs:
+    command: custom
+    workingDir: '$(project.rootDirectory)'
+    verbose: false
+    customCommand: 'run build'
+
+- task: Npm@1
+  displayName: 'npm run test'
+  inputs:
+    command: custom
+    workingDir: '$(project.rootDirectory)'
+    verbose: false
+    customCommand: 'run test-ci'
+  continueOnError: true
+
+- task: PublishTestResults@2
+  displayName: 'Publish Test Results **\junit.xml'
+  inputs:
+    testResultsFiles: '**\junit.xml'
+    searchFolder: '$(project.rootDirectory)'
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish code coverage from $(project.rootDirectory)/coverage/cobertura-coverage.xml'
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(project.rootDirectory)/coverage/cobertura-coverage.xml'
+    reportDirectory: '$(project.rootDirectory)/coverage/'
+    additionalCodeCoverageFiles: '$(project.rootDirectory)/coverage/**/*'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: '$(project.rootDirectory)/dist'
+

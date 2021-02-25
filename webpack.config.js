@@ -9,16 +9,15 @@ module.exports = {
     filename: '[name].[chunkhash].js',
     path: path.resolve('dist')
   },
-  resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx']
-  },
   devtool: 'sourcemaps',
   module: {
     rules: [
       {
-        test: /\.[tj]sx?$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'ts-loader'
+        use: {
+          loader: 'babel-loader'
+        }
       },
       {
         test: /\.css$/,

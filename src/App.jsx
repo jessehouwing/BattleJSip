@@ -1,49 +1,43 @@
 import React, { Component, Fragment } from 'react';
-import './App.css';
 import {
-  Board,
   getRandomPosition,
   initializeBoard,
   initializeEnemyBoard,
   isHit,
-  placeShip,
-  Position,
-  randomStrategy,
-  staticStrategy,
+  placeShip
 } from './game/board-service';
+import './App.css';
 
-interface SelectedProps {
-  selected: (choice: string) => void;
-}
-
-function getSequence(length: number) {
+function getSequence(length) {
   return Array.from({ length })
     .fill(0)
     .map((e, i) => i);
 }
 
-function getLetter(i: number) {
+function getLetter(i) {
   return String.fromCharCode('A'.charCodeAt(0) + i);
 }
 
 const boardSize = 8;
 
-const Board = ({ selected }: SelectedProps) => {
+const Board = ({ selected }) => {
   return (
     <table>
       <thead>
         <tr>
           <th />
-          {getSequence(boardSize).map((i) => <th key={i}>{getLetter(i)}</th>)}
+          {getSequence(boardSize).map(i => (
+            <th key={i}>{getLetter(i)}</th>
+          ))}
         </tr>
       </thead>
       <tbody>
-        {getSequence(boardSize).map((i) => (
+        {getSequence(boardSize).map(i => (
           <tr key={i}>
             <td>
               <strong>{i}</strong>
             </td>
-            {getSequence(boardSize).map((j) => (
+            {getSequence(boardSize).map(j => (
               <td key={j}>
                 <button onClick={() => selected(getLetter(j) + i)}>
                   {getLetter(j) + i}
@@ -57,7 +51,7 @@ const Board = ({ selected }: SelectedProps) => {
   );
 };
 
-const DirectionSelector = ({ selected }: SelectedProps) => (
+const DirectionSelector = ({ selected }) => (
   <table>
     <tbody>
       <tr>
@@ -88,31 +82,24 @@ const DirectionSelector = ({ selected }: SelectedProps) => (
 );
 
 export default class App extends Component {
-  public state: {
-    myBoard: Board,
-    currentPosition?: Position,
-    currentShipIndex: number,
-    enemyBoard: Board,
-  };
-
-  constructor(props: {}) {
-    super(props);
+  constructor() {
+    super();
 
     this.state = {
       currentPosition: undefined,
       currentShipIndex: 0,
       enemyBoard: initializeEnemyBoard(),
-      myBoard: initializeBoard(),
+      myBoard: initializeBoard()
     };
   }
 
-  public setCurrentPosition = (position: Position) => {
+  setCurrentPosition = position => {
     this.setState({
-      currentPosition: position,
+      currentPosition: position
     });
-  }
+  };
 
-  public placeMyShip = (direction: string) => {
+  placeMyShip = direction => {
     const { myBoard, currentPosition, currentShipIndex } = this.state;
 
     if (currentPosition) {
@@ -121,26 +108,26 @@ export default class App extends Component {
       this.setState({
         currentPosition: undefined,
         currentShipIndex: currentShipIndex + 1,
-        myBoard,
+        myBoard
       });
     }
-  }
+  };
 
-  public shoot = (position: Position) => {
+  shoot = position => {
     alert(
       `Shoot at ${position}: ${
         isHit(this.state.enemyBoard, position) ? 'Hit!' : 'Miss!'
-      }`,
+      }`
     );
-    const counterAttack = staticStrategy(boardSize);
+    const counterAttack = getRandomPosition(8, 8);
     alert(
       `Enemy shoots at ${counterAttack}: ${
         isHit(this.state.myBoard, counterAttack) ? 'Hit!' : 'Miss!'
-      }`,
+      }`
     );
-  }
+  };
 
-  public render() {
+  render() {
     const { currentPosition, currentShipIndex, myBoard } = this.state;
     const ship = myBoard.fleet[currentShipIndex];
     let text;

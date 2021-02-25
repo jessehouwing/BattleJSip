@@ -1,63 +1,47 @@
-export interface Ship {
-  name: string;
-  color: string;
-  size: number;
-  positions: string[];
-}
-
-export type Fleet = Ship[];
-export type Position = string;
-
-type Strategy = (boardSize: number) => Position;
-
-export interface Board {
-  fleet: Fleet;
-}
-
-export function makeFleet(): Fleet {
+export function makeFleet() {
   return [
     {
       name: 'Aircraft Carrier',
       color: 'cadet blue',
       size: 5,
-      positions: [],
+      positions: []
     },
     {
       name: 'Battleship',
       color: 'red',
       size: 4,
-      positions: [],
+      positions: []
     },
     {
       name: 'Submarine',
       color: 'chartreuse',
       size: 3,
-      positions: [],
+      positions: []
     },
     {
       name: 'Patrol',
       color: 'yellow',
       size: 3,
-      positions: [],
+      positions: []
     },
     {
       name: 'Patrol Boat',
       color: 'orange',
       size: 2,
-      positions: [],
-    },
+      positions: []
+    }
   ];
 }
 
-export function initializeBoard(): Board {
+export function initializeBoard() {
   return {
-    fleet: makeFleet(),
+    fleet: makeFleet()
   };
 }
 
-export function initializeEnemyBoard(): Board {
-  const board: Board = {
-    fleet: makeFleet(),
+export function initializeEnemyBoard() {
+  const board = {
+    fleet: makeFleet()
   };
 
   placeShip(board, 0, 'B4', 'down');
@@ -69,11 +53,11 @@ export function initializeEnemyBoard(): Board {
   return board;
 }
 
-export function isHit(board: Board, position: Position) {
-  return board.fleet.some((ship) => ship.positions.some((p) => p === position));
+export function isHit(board, position) {
+  return board.fleet.some(ship => ship.positions.some(p => p === position));
 }
 
-export function getRelativePosition(position: Position, direction: string) {
+export function getRelativePosition(position, direction) {
   const splitPosition = position.split('');
   switch (direction) {
     case 'right':
@@ -95,8 +79,8 @@ export function getRelativePosition(position: Position, direction: string) {
   }
 }
 
-export function placeShip(board: Board, shipIndex: number, position: Position, direction: string) {
-  const ship = board.fleet[shipIndex];
+export function placeShip(board, shipIndex, position, direction) {
+  let ship = board.fleet[shipIndex];
 
   let currentPosition = position;
   for (let i = 0; i < ship.size; i++) {
@@ -105,18 +89,8 @@ export function placeShip(board: Board, shipIndex: number, position: Position, d
   }
 }
 
-export function getRandomPosition(columnCount: number, rowCount: number) {
+export function getRandomPosition(columnCount, rowCount) {
   const column = String.fromCharCode(65 + Math.round(Math.random()) * rowCount);
   const row = (Math.round(Math.random()) * columnCount).toString();
   return column + row;
 }
-
-export const randomStrategy: Strategy = (boardSize) => getRandomPosition(boardSize, boardSize);
-
-let i = 0;
-const positions = ['a0', 'b5', 'e4'];
-export const staticStrategy: Strategy = () => {
-  const result = positions[i % positions.length];
-  i++;
-  return result;
-};
