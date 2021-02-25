@@ -1,6 +1,7 @@
 # Getting Started
 
 ```sh
+npm install -g yarn 
 yarn install --frozen-lockfile
 yarn start 
 ```
