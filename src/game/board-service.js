@@ -67,7 +67,6 @@ export function initializeOwnBoard() {
   return board;
 }
 
-
 export function isHit(board, position) {
   return board.fleet.some(ship => ship.positions.some(p => p === position));
 }
