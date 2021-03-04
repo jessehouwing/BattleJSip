@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment} from 'react';
 import {
   getRandomPosition,
   initializeBoard,
@@ -9,7 +9,7 @@ import {
 import './App.css';
 
 function getSequence(length) {
-  return Array.from({ length })
+  return Array.from({length})
     .fill(0)
     .map((e, i) => i);
 }
@@ -20,38 +20,44 @@ function getLetter(i) {
 
 const boardSize = 8;
 
-const Board = ({ selected }) => {
+const Board = ({selected}) => {
   return (
-    <table>
-      <thead>
-        <tr>
-          <th />
-          {getSequence(boardSize).map(i => (
-            <th key={i}>{getLetter(i)}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {getSequence(boardSize).map(i => (
-          <tr key={i}>
-            <td>
-              <strong>{i}</strong>
-            </td>
-            {getSequence(boardSize).map(j => (
-              <td key={j}>
-                <button onClick={() => selected(getLetter(j) + i)}>
-                  {getLetter(j) + i}
-                </button>
-              </td>
+    <div className="board-container">
+      <table className="board">
+        <thead>
+          <tr>
+            <th />
+            {getSequence(boardSize).map(i => (
+              <th key={i}>{getLetter(i)}</th>
             ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {getSequence(boardSize).map(i => (
+            <tr key={i}>
+              <td className="row">
+                <strong>{i}</strong>
+              </td>
+              {getSequence(boardSize).map(j => (
+                <td key={j}>
+                  <div className="square">
+                    <div className="square-content activated-cell">
+                      <button onClick={() => selected(getLetter(j) + i)}>
+                        {getLetter(j) + i}
+                      </button>
+                    </div>
+                  </div>
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
-const DirectionSelector = ({ selected }) => (
+const DirectionSelector = ({selected}) => (
   <table>
     <tbody>
       <tr>
@@ -100,7 +106,7 @@ export default class App extends Component {
   };
 
   placeMyShip = direction => {
-    const { myBoard, currentPosition, currentShipIndex } = this.state;
+    const {myBoard, currentPosition, currentShipIndex} = this.state;
 
     if (currentPosition) {
       placeShip(myBoard, currentShipIndex, currentPosition, direction);
@@ -115,20 +121,18 @@ export default class App extends Component {
 
   shoot = position => {
     alert(
-      `Shoot at ${position}: ${
-        isHit(this.state.enemyBoard, position) ? 'Hit!' : 'Miss!'
+      `Shoot at ${position}: ${isHit(this.state.enemyBoard, position) ? 'Hit!' : 'Miss!'
       }`
     );
     const counterAttack = getRandomPosition(8, 8);
     alert(
-      `Enemy shoots at ${counterAttack}: ${
-        isHit(this.state.myBoard, counterAttack) ? 'Hit!' : 'Miss!'
+      `Enemy shoots at ${counterAttack}: ${isHit(this.state.myBoard, counterAttack) ? 'Hit!' : 'Miss!'
       }`
     );
   };
 
   render() {
-    const { currentPosition, currentShipIndex, myBoard } = this.state;
+    const {currentPosition, currentShipIndex, myBoard} = this.state;
     const ship = myBoard.fleet[currentShipIndex];
     let text;
 
@@ -148,8 +152,8 @@ export default class App extends Component {
         {!!currentPosition ? (
           <DirectionSelector selected={this.placeMyShip} />
         ) : (
-          <Board selected={ship ? this.setCurrentPosition : this.shoot} />
-        )}
+            <Board selected={ship ? this.setCurrentPosition : this.shoot} />
+          )}
       </Fragment>
     );
   }

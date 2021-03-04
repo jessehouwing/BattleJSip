@@ -1,3 +1,84 @@
 #app {
-    color: #6C1D5F; /* Xebia purple */
+  color: #6C1D5F; /* Xebia purple */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.board-container {
+  width: 50%;
+  max-width: 700px;
+  min-width: 300px;
+}
+
+.board {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.board th, .board td {
+  text-align: center;
+  border: 1px solid black;
+  padding: 0;
+}
+
+.board th {
+  height: 2rem;
+  border: none;
+}
+
+.board td {
+  position: relative;
+  width: 10%;
+}
+
+.board .square {
+  width: 100%;
+  padding-top: 100%;
+  position: relative;
+}
+.board .square-content {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.board .row {
+  border: none;
+  text-align: right;
+  padding-right: 1rem;
+}
+
+.board button {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  cursor: pointer;
+  font-size: 0;
+}
+
+.board .activated-cell button:before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 1rem;
+  text-align: center;
+  transform: translate(-0.5rem, -0.8rem);
+}
+
+.board .hit button {
+  background-color: lightcoral;
+}
+
+.board .hit button:before {
+  content: '💥';
+  background-color: lightcoral;
+}
+
+.board .water button {
+  background-color: lightblue;
+}
+
+.board .water button:before {
+  content: '🌊';
 }
