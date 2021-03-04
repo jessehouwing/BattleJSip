@@ -1,3 +1,10 @@
+export const STATE = {
+  SHIP: 1,
+  HIT: 2,
+  MISS: 3,
+  SUNK: 4
+};
+
 export function makeFleet() {
   return [
     {
@@ -40,9 +47,7 @@ export function initializeBoard() {
 }
 
 export function initializeEnemyBoard() {
-  const board = {
-    fleet: makeFleet()
-  };
+  const board = createBoard();
 
   placeShip(board, 0, 'H0', 'down');
   placeShip(board, 1, 'F0', 'down');
@@ -54,9 +59,7 @@ export function initializeEnemyBoard() {
 }
 
 export function initializeOwnBoard() {
-  const board = {
-    fleet: makeFleet()
-  };
+  const board = createBoard();
 
   placeShip(board, 0, 'A0', 'down');
   placeShip(board, 1, 'C0', 'down');
@@ -67,9 +70,42 @@ export function initializeOwnBoard() {
   return board;
 }
 
+function createBoard() {
+  return {
+    fleet: makeFleet(),
+    state: {}
+  };
+}
 
 export function isHit(board, position) {
-  return board.fleet.some(ship => ship.positions.some(p => p === position));
+  const isHit = board.fleet.some(ship => ship.positions.some(p => p === position));
+  if (isHit) {
+    if (board.state[position] !== STATE.SUNK) {
+      board.state[position] = STATE.HIT;
+      checkSunk(board, position);
+    }
+  } else {
+    board.state[position] = STATE.MISS;
+  }
+  console.log(board.state);
+  return isHit;
+}
+
+export function checkSunk(board, position) {
+  board.fleet.forEach(ship => {
+    ship.positions.forEach(shipPosition => {
+      if (shipPosition === position) {
+        const isSunk = ship.positions
+          .map(p => board.state[p] === STATE.HIT)
+          .reduce((acc, val) => acc && val);
+        if (isSunk) {
+          ship.positions.forEach(p => {
+            board.state[p] = STATE.SUNK;
+          });
+        }
+      }
+    });
+  });
 }
 
 export function getRelativePosition(position, direction) {
@@ -100,6 +136,7 @@ export function placeShip(board, shipIndex, position, direction) {
   let currentPosition = position;
   for (let i = 0; i < ship.size; i++) {
     ship.positions.push(currentPosition);
+    board.state[currentPosition] = STATE.SHIP;
     currentPosition = getRelativePosition(currentPosition, direction);
   }
 }
