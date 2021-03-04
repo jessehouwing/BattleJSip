@@ -4,25 +4,77 @@ import {
   initializeOwnBoard,
   initializeEnemyBoard,
   isHit,
-  placeShip, initializeBoard
+  placeShip,
+  initializeBoard,
+  STATE
 } from './game/board-service';
 import './App.css';
 
 function getSequence(length) {
-  return Array.from({length})
-    .fill(0)
-    .map((e, i) => i);
+  return [
+    ...Array.from({length})
+      .fill(0)
+      .map((e, i) => i)
+  ];
 }
 
 function getLetter(i) {
   return String.fromCharCode('A'.charCodeAt(0) + i);
 }
 
+function getNumberFromLetter(letter) {
+  return letter.charCodeAt() - 65;
+}
+
+function getSquareCss(fleet, gameState, row, cell, isMyBoard) {
+  const cellState = gameState[getLetter(cell) + row];
+  let css = ' ';
+  if (cellState === STATE.SHIP) {
+    css += 'ship';
+  } else if (cellState === STATE.HIT) {
+    css += 'hit';
+  } else if (cellState === STATE.MISS) {
+    css += 'water';
+  } else if (cellState === STATE.SUNK) {
+    css += 'sunk';
+  }
+  if (!isMyBoard) {
+    return css;
+  }
+  const isShip = fleet.find(({positions}) => {
+    const pos = positions.find(coord => {
+      return row === parseInt(coord[1], 10) && cell === parseInt(getNumberFromLetter(coord[0]), 10);
+    });
+    return pos ? true : false;
+  });
+  const shippCss = isShip ? ' is-ship' : '';
+  css += shippCss;
+  return css;
+}
+
+function getBorderCss(i, j) {
+  const classNames = [];
+  if (i === 0) {
+    classNames.push('top');
+  }
+  if (j === 0) {
+    classNames.push('left');
+  }
+  if (i === boardSize - 1) {
+    classNames.push('bottom');
+  }
+  if (j === boardSize - 1) {
+    classNames.push('right');
+  }
+  return classNames.join(' ');
+}
+
 const boardSize = 8;
 
-const Board = ({selected}) => {
+const Board = ({fleet, gameState, selected, isMyBoard, forceUpdateHandler}) => {
   return (
     <div className="board-container">
+      <div className="board-headline">{isMyBoard ? 'Your grid' : 'Opponents grid'}</div>
       <table className="board">
         <thead>
           <tr>
@@ -36,13 +88,13 @@ const Board = ({selected}) => {
           {getSequence(boardSize).map(i => (
             <tr key={i}>
               <td className="row">
-                <strong>{i}</strong>
+                <strong>{i + 1}</strong>
               </td>
               {getSequence(boardSize).map(j => (
-                <td key={j}>
+                <td key={j} className={getBorderCss(i, j)}>
                   <div className="square">
-                    <div className="square-content activated-cell">
-                      <button onClick={() => selected(getLetter(j) + i)}>
+                    <div className={'square-content activated-cell ' + getSquareCss(fleet, gameState, i, j, isMyBoard)}>
+                      <button onClick={() => (forceUpdateHandler() && selected(getLetter(j) + i))}>
                         {getLetter(j) + i}
                       </button>
                     </div>
@@ -53,7 +105,7 @@ const Board = ({selected}) => {
           ))}
         </tbody>
       </table>
-    </div>
+    </div >
   );
 };
 
@@ -87,6 +139,9 @@ const DirectionSelector = ({selected}) => (
   </table>
 );
 
+const MessageBox = ({text}) => (
+  <div className="message-box">{text}</div>
+);
 export default class App extends Component {
   constructor() {
     super();
@@ -132,6 +187,13 @@ export default class App extends Component {
     );
   };
 
+  setStateToRender() {
+    let num = this.state.num || 0;
+    num++;
+    this.setState({...this.state, num});
+    return true;
+  }
+
   render() {
     const {currentPosition, currentShipIndex, myBoard} = this.state;
     const ship = myBoard.fleet[currentShipIndex];
@@ -149,11 +211,35 @@ export default class App extends Component {
 
     return (
       <Fragment>
-        <h1>{text}</h1>
         {!!currentPosition ? (
           <DirectionSelector selected={this.placeMyShip} />
         ) : (
-            <Board selected={ship ? this.setCurrentPosition : this.shoot} />
+            <div className="game-layout">
+              <div>
+                <div className="hidden">Ships</div>
+              </div>
+              <div>
+                <Board forceUpdateHandler={() => this.setStateToRender()} isMyBoard={true} fleet={this.state.myBoard.fleet} gameState={this.state.myBoard.state} selected={ship ? this.setCurrentPosition : this.shoot} />
+              </div>
+              <div>
+                <div>&nbsp;</div>
+              </div>
+              <div className="second-board">
+                <Board forceUpdateHandler={() => this.setStateToRender()} isMyBoard={false} fleet={this.state.enemyBoard.fleet} gameState={this.state.enemyBoard.state} selected={ship ? this.setCurrentPosition : this.shoot} />
+              </div>
+              <div>
+                <div className="hidden">Ships</div>
+              </div>
+              <div className="x">
+                <div>
+                  <MessageBox text={text} />
+                </div>
+                <div className="interaction-buttons hidden">
+                  <div>New Game</div>
+                  <div>End Game</div>
+                </div>
+              </div>
+            </div>
           )}
       </Fragment>
     );

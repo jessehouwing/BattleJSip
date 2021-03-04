@@ -81,7 +81,9 @@ export function isHit(board, position) {
   } else {
     board.state[position] = STATE.MISS;
   }
-  console.log(board.state);
+  board.state = {
+    ...board.state
+  };
   return isHit;
 }
 

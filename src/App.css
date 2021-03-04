@@ -1,12 +1,17 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
 #app {
-  color: #6C1D5F; /* Xebia purple */
+  color: blue; /* Xebia purple */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .board-container {
-  width: 50%;
-  max-width: 700px;
-  min-width: 300px;
+  width: 100%;
+  max-width: 400px;
+  min-width: 265px;
 }
 
 .board {
@@ -16,7 +21,7 @@
 
 .board th, .board td {
   text-align: center;
-  border: 1px solid black;
+  border: 1px solid lightgray;
   padding: 0;
 }
 
@@ -34,7 +39,9 @@
   width: 100%;
   padding-top: 100%;
   position: relative;
+  overflow: hidden;
 }
+
 .board .square-content {
   width: 100%;
   height: 100%;
@@ -46,7 +53,7 @@
 .board .row {
   border: none;
   text-align: right;
-  padding-right: 1rem;
+  padding-right: 0.3rem;
 }
 
 .board button {
@@ -55,6 +62,7 @@
   border: 0;
   cursor: pointer;
   font-size: 0;
+  background-color: white;
 }
 
 .board .activated-cell button:before {
@@ -81,4 +89,86 @@
 
 .board .water button:before {
   content: '🌊';
+}
+
+.board td.top {
+  border-top-width: 2px;
+  border-top-color: blue;
+}
+
+.board td.left {
+  border-left-width: 2px;
+  border-left-color: blue;
+}
+
+.board td.bottom {
+  border-bottom-width: 2px;
+  border-bottom-color: blue;
+}
+
+.board td.right {
+  border-right-width: 2px;
+  border-right-color: blue;
+}
+
+.game-layout {
+  display: grid;
+  padding: 1rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  grid-template-columns: 2fr 3fr 1fr 3fr 2fr;
+  max-width: 1600px;
+  margin: 0 auto;
+
+}
+
+.x {
+  grid-column-start: 2;
+  grid-column-end: 5;
+  margin-top: 2.5rem;
+  padding-left: 4%;
+  margin-right: -2px;
+  /* background: red; */
+  /* border: 2px solid black; */
+}
+
+.second-board {
+  justify-content: flex-end;
+  display: flex;
+}
+
+.message-box {
+  background-color: aliceblue;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  text-align: center;
+}
+
+.interaction-buttons {
+  display: flex;
+  padding-top: 3rem;
+  justify-content: space-between;
+}
+
+.interaction-buttons div {
+  width: 10rem;
+  padding: 1rem;
+  border-radius: 5rem;
+  background-color: blue;
+  color: white;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.is-ship button {
+  background-color: #dbd0ff;
+}
+
+.board-headline {
+  text-align: center;
+  padding-bottom: 2rem;
+}
+
+.hidden {
+  display: none;
 }
