@@ -42,12 +42,13 @@ export function makeFleet() {
 
 export function initializeBoard() {
   return {
-    fleet: makeFleet()
+    fleet: makeFleet(),
+    state: {}
   };
 }
 
 export function initializeEnemyBoard() {
-  const board = createBoard();
+  const board = initializeBoard();
 
   placeShip(board, 0, 'H0', 'down');
   placeShip(board, 1, 'F0', 'down');
@@ -59,7 +60,7 @@ export function initializeEnemyBoard() {
 }
 
 export function initializeOwnBoard() {
-  const board = createBoard();
+  const board = initializeBoard();
 
   placeShip(board, 0, 'A0', 'down');
   placeShip(board, 1, 'C0', 'down');
@@ -68,13 +69,6 @@ export function initializeOwnBoard() {
   placeShip(board, 4, 'G7', 'up');
 
   return board;
-}
-
-function createBoard() {
-  return {
-    fleet: makeFleet(),
-    state: {}
-  };
 }
 
 export function isHit(board, position) {
