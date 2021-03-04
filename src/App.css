@@ -91,6 +91,14 @@ body {
   content: '🌊';
 }
 
+.board .sunk button {
+  background-color: black;
+}
+
+.board .sunk button:before {
+  content: '💀';
+}
+
 .board td.top {
   border-top-width: 2px;
   border-top-color: blue;

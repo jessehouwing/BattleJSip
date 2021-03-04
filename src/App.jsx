@@ -161,6 +161,13 @@ export default class App extends Component {
     });
   };
 
+  setText = text => {
+    this.setState({
+      ...this.state,
+      text
+    });
+  };
+
   placeMyShip = direction => {
     const {myBoard, currentPosition, currentShipIndex} = this.state;
 
@@ -176,12 +183,12 @@ export default class App extends Component {
   };
 
   shoot = position => {
-    alert(
+    this.setText(
       `Shoot at ${position}: ${isHit(this.state.enemyBoard, position) ? 'Hit!' : 'Miss!'
       }`
     );
     const counterAttack = getRandomPosition(8, 8);
-    alert(
+    this.setText(
       `Enemy shoots at ${counterAttack}: ${isHit(this.state.myBoard, counterAttack) ? 'Hit!' : 'Miss!'
       }`
     );
