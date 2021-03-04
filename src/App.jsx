@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import {
   getRandomPosition,
-  initializeBoard,
+  initializeOwnBoard,
   initializeEnemyBoard,
   isHit,
-  placeShip
+  placeShip, initializeBoard
 } from './game/board-service';
 import './App.css';
 
@@ -84,12 +84,13 @@ const DirectionSelector = ({ selected }) => (
 export default class App extends Component {
   constructor() {
     super();
-
+    const urlParams = new URLSearchParams(window.location.search);
+    const debug = urlParams.get('debug');
     this.state = {
       currentPosition: undefined,
-      currentShipIndex: 0,
+      currentShipIndex: debug ? 10 : 0,
       enemyBoard: initializeEnemyBoard(),
-      myBoard: initializeBoard()
+      myBoard: debug ? initializeOwnBoard() : initializeBoard()
     };
   }
 

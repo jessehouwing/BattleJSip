@@ -44,14 +44,29 @@ export function initializeEnemyBoard() {
     fleet: makeFleet()
   };
 
-  placeShip(board, 0, 'B4', 'down');
-  placeShip(board, 1, 'E6', 'down');
-  placeShip(board, 2, 'A3', 'right');
-  placeShip(board, 3, 'F8', 'right');
-  placeShip(board, 4, 'C5', 'down');
+  placeShip(board, 0, 'H0', 'down');
+  placeShip(board, 1, 'F0', 'down');
+  placeShip(board, 2, 'D0', 'down');
+  placeShip(board, 3, 'B0', 'down');
+  placeShip(board, 4, 'B7', 'up');
 
   return board;
 }
+
+export function initializeOwnBoard() {
+  const board = {
+    fleet: makeFleet()
+  };
+
+  placeShip(board, 0, 'A0', 'down');
+  placeShip(board, 1, 'C0', 'down');
+  placeShip(board, 2, 'E0', 'down');
+  placeShip(board, 3, 'G0', 'down');
+  placeShip(board, 4, 'G7', 'up');
+
+  return board;
+}
+
 
 export function isHit(board, position) {
   return board.fleet.some(ship => ship.positions.some(p => p === position));
