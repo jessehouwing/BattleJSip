@@ -4,14 +4,18 @@ import {
   initializeOwnBoard,
   initializeEnemyBoard,
   isHit,
-  placeShip, initializeBoard
+  placeShip,
+  initializeBoard,
+  STATE
 } from './game/board-service';
 import './App.css';
 
 function getSequence(length) {
-  return Array.from({length})
-    .fill(0)
-    .map((e, i) => i);
+  return [
+    ...Array.from({length})
+      .fill(0)
+      .map((e, i) => i)
+  ];
 }
 
 function getLetter(i) {
@@ -22,26 +26,17 @@ function getNumberFromLetter(letter) {
   return letter.charCodeAt() - 65;
 }
 
-const fake = [
-  [1, 0, 0, 0, 0, 0, 0, 0],
-  [1, 0, 0, 0, 0, 0, 0, 0],
-  [1, 0, 0, 0, 0, 0, 0, 0],
-  [1, 0, 0, 0, 0, 0, 0, 0],
-  [2, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0]
-];
-
 function getSquareCss(fleet, gameState, row, cell, isMyBoard) {
-  gameState = fake;
-  console.log(row, cell);
-  const cellState = gameState[row][cell];
+  const cellState = gameState[getLetter(cell) + row];
   let css = ' ';
-  if (cellState === 1) {
+  if (cellState === STATE.SHIP) {
+    css += 'ship';
+  } else if (cellState === STATE.HIT) {
     css += 'hit';
-  } else if (cellState === 2) {
+  } else if (cellState === STATE.MISS) {
     css += 'water';
+  } else if (cellState === STATE.SUNK) {
+    css += 'sunk';
   }
   if (!isMyBoard) {
     return css;
@@ -76,9 +71,7 @@ function getBorderCss(i, j) {
 
 const boardSize = 8;
 
-const Board = ({fleet, selected, isMyBoard}) => {
-  console.log('fleet', fleet);
-  const gameState = [];
+const Board = ({fleet, gameState, selected, isMyBoard, forceUpdateHandler}) => {
   return (
     <div className="board-container">
       <div className="board-headline">{isMyBoard ? 'Your grid' : 'Opponents grid'}</div>
@@ -101,7 +94,7 @@ const Board = ({fleet, selected, isMyBoard}) => {
                 <td key={j} className={getBorderCss(i, j)}>
                   <div className="square">
                     <div className={'square-content activated-cell ' + getSquareCss(fleet, gameState, i, j, isMyBoard)}>
-                      <button onClick={() => selected(getLetter(j) + i)}>
+                      <button onClick={() => (forceUpdateHandler() && selected(getLetter(j) + i))}>
                         {getLetter(j) + i}
                       </button>
                     </div>
@@ -112,7 +105,7 @@ const Board = ({fleet, selected, isMyBoard}) => {
           ))}
         </tbody>
       </table>
-    </div>
+    </div >
   );
 };
 
@@ -194,6 +187,13 @@ export default class App extends Component {
     );
   };
 
+  setStateToRender() {
+    let num = this.state.num || 0;
+    num++;
+    this.setState({...this.state, num});
+    return true;
+  }
+
   render() {
     const {currentPosition, currentShipIndex, myBoard} = this.state;
     const ship = myBoard.fleet[currentShipIndex];
@@ -219,13 +219,13 @@ export default class App extends Component {
                 <div className="hidden">Ships</div>
               </div>
               <div>
-                <Board isMyBoard={true} fleet={this.state.myBoard.fleet} selected={ship ? this.setCurrentPosition : this.shoot} />
+                <Board forceUpdateHandler={() => this.setStateToRender()} isMyBoard={true} fleet={this.state.myBoard.fleet} gameState={this.state.myBoard.state} selected={ship ? this.setCurrentPosition : this.shoot} />
               </div>
               <div>
                 <div>&nbsp;</div>
               </div>
               <div className="second-board">
-                <Board isMyBoard={false} fleet={this.state.enemyBoard.fleet} selected={ship ? this.setCurrentPosition : this.shoot} />
+                <Board forceUpdateHandler={() => this.setStateToRender()} isMyBoard={false} fleet={this.state.enemyBoard.fleet} gameState={this.state.enemyBoard.state} selected={ship ? this.setCurrentPosition : this.shoot} />
               </div>
               <div>
                 <div className="hidden">Ships</div>
