@@ -4,8 +4,23 @@ import {
   getRelativePosition,
   isHit,
   placeShip,
-  STATE
+  STATE,
+  getRandomPosition
 } from './board-service';
+
+function getTopAndLeft(position) {
+  const splitPosition = position.split('');
+  const character = splitPosition[0];
+  const number = splitPosition[1];
+
+  const top = parseInt(number);
+  const left = character.charCodeAt(0) - 65;
+
+  return {
+    top,
+    left
+  };
+}
 
 describe('the board service', () => {
   it('should get relative position', () => {
@@ -114,5 +129,20 @@ describe('the board service', () => {
         expect(enemyBoard.state[shipPosition]).toBe(STATE.SHIP);
       });
     });
+  });
+
+  it('should only return random fields within the map', (done) => {
+    const size = 8;
+
+    for (let i = 0; i < 100; i++) {
+      const randomPosition = getRandomPosition(size, size);
+      const { top, left } = getTopAndLeft(randomPosition);
+      expect(top).toBeGreaterThanOrEqual(0);
+      expect(top).toBeLessThan(size);
+      expect(left).toBeGreaterThanOrEqual(0);
+      expect(left).toBeLessThan(size);
+    }
+
+    done();
   });
 });

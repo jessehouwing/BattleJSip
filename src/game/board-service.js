@@ -138,7 +138,23 @@ export function placeShip(board, shipIndex, position, direction) {
 }
 
 export function getRandomPosition(columnCount, rowCount) {
-  const column = String.fromCharCode(65 + Math.round(Math.random()) * rowCount);
-  const row = (Math.round(Math.random()) * columnCount).toString();
+  const column = String.fromCharCode(
+    65 + Math.round(Math.random() * (rowCount - 1))
+  );
+  const row = Math.round(Math.random() * (columnCount - 1)).toString();
   return column + row;
+}
+
+export function getRandomBoardPosition(board, columnCount, rowCount) {
+  let boardPosition = null;
+  while (!boardPosition) {
+    const randomPosition = getRandomPosition(columnCount, rowCount);
+    if (
+      board.state[randomPosition] === undefined ||
+      board.state[randomPosition] === STATE.SHIP
+    ) {
+      boardPosition = randomPosition;
+    }
+  }
+  return boardPosition;
 }

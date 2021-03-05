@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {
-  getRandomPosition,
+  getRandomBoardPosition,
   initializeOwnBoard,
   initializeEnemyBoard,
   isHit,
@@ -169,7 +169,7 @@ export default class App extends Component {
   };
 
   placeMyShip = direction => {
-    const {myBoard, currentPosition, currentShipIndex} = this.state;
+    const { myBoard, currentPosition, currentShipIndex } = this.state;
 
     if (currentPosition) {
       placeShip(myBoard, currentShipIndex, currentPosition, direction);
@@ -183,13 +183,22 @@ export default class App extends Component {
   };
 
   shoot = position => {
+    if (
+      this.state.enemyBoard.state[position] === STATE.HIT ||
+      this.state.enemyBoard.state[position] === STATE.MISS ||
+      this.state.enemyBoard.state[position] === STATE.SUNK
+    ) {
+      return;
+    }
     this.setText(
-      `Shoot at ${position}: ${isHit(this.state.enemyBoard, position) ? 'Hit!' : 'Miss!'
+      `Shoot at ${position}: ${
+        isHit(this.state.enemyBoard, position) ? 'Hit!' : 'Miss!'
       }`
     );
-    const counterAttack = getRandomPosition(8, 8);
+    const counterAttack = getRandomBoardPosition(this.state.myBoard, 8, 8);
     this.setText(
-      `Enemy shoots at ${counterAttack}: ${isHit(this.state.myBoard, counterAttack) ? 'Hit!' : 'Miss!'
+      `Enemy shoots at ${counterAttack}: ${
+        isHit(this.state.myBoard, counterAttack) ? 'Hit!' : 'Miss!'
       }`
     );
   };
@@ -221,33 +230,33 @@ export default class App extends Component {
         {!!currentPosition ? (
           <DirectionSelector selected={this.placeMyShip} />
         ) : (
-            <div className="game-layout">
+          <div className="game-layout">
+            <div>
+              <div className="hidden">Ships</div>
+            </div>
+            <div>
+              <Board forceUpdateHandler={() => this.setStateToRender()} isMyBoard={true} fleet={this.state.myBoard.fleet} gameState={this.state.myBoard.state} selected={ship ? this.setCurrentPosition : this.shoot} />
+            </div>
+            <div>
+              <div>&nbsp;</div>
+            </div>
+            <div className="second-board">
+              <Board forceUpdateHandler={() => this.setStateToRender()} isMyBoard={false} fleet={this.state.enemyBoard.fleet} gameState={this.state.enemyBoard.state} selected={ship ? this.setCurrentPosition : this.shoot} />
+            </div>
+            <div>
+              <div className="hidden">Ships</div>
+            </div>
+            <div className="x">
               <div>
-                <div className="hidden">Ships</div>
+                <MessageBox text={text} />
               </div>
-              <div>
-                <Board forceUpdateHandler={() => this.setStateToRender()} isMyBoard={true} fleet={this.state.myBoard.fleet} gameState={this.state.myBoard.state} selected={ship ? this.setCurrentPosition : this.shoot} />
-              </div>
-              <div>
-                <div>&nbsp;</div>
-              </div>
-              <div className="second-board">
-                <Board forceUpdateHandler={() => this.setStateToRender()} isMyBoard={false} fleet={this.state.enemyBoard.fleet} gameState={this.state.enemyBoard.state} selected={ship ? this.setCurrentPosition : this.shoot} />
-              </div>
-              <div>
-                <div className="hidden">Ships</div>
-              </div>
-              <div className="x">
-                <div>
-                  <MessageBox text={text} />
-                </div>
-                <div className="interaction-buttons hidden">
-                  <div>New Game</div>
-                  <div>End Game</div>
-                </div>
+              <div className="interaction-buttons hidden">
+                <div>New Game</div>
+                <div>End Game</div>
               </div>
             </div>
-          )}
+          </div>
+        )}
       </Fragment>
     );
   }
