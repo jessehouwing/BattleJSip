@@ -1,4 +1,4 @@
-# Getting Started
+# Getting Started!
 
 ```sh
 npm install -g yarn 
